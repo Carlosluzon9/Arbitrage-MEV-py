@@ -14,6 +14,7 @@ quoter:
   pancakeswap: ${PANCAKESWAP_QUOTER_ADDRESS}
   camelot: ${CAMELOT_QUOTER_ADDRESS}
   ramses: ${RAMSES_QUOTER_ADDRESS}
+  traderjoe: ${TRADERJOE_QUOTER_ADDRESS}
 
 multicall: ${MULTICALL_ADDRESS}
 
@@ -27,6 +28,7 @@ router:
   CamelotV2 : ${CAMELOTV2_ROUTER_ADDRESS}
   CamelotV3 : ${CAMELOTV3_ROUTER_ADDRESS}
   RamsesV3: ${RAMSESV3_ROUTER_ADDRESS}
+  TraderjoeV2: ${TRADERJOEV2_ROUTER_ADDRESS}
 
 
 Arb:
