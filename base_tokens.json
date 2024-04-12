@@ -1,0 +1,25 @@
+{
+    "tokens": [
+        {
+            "symbol": "WETH",
+            "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+            "decimals": 18,
+            "amount_min": 0.0059,
+            "conversion": 0.000277
+        },
+        {
+            "symbol": "USDC",
+            "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+            "decimals": 6,
+            "amount_min": 20,
+            "conversion": 0.94e-12
+        },
+        {
+            "symbol": "USDT",
+            "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+            "decimals": 6,
+            "amount_min": 20,
+            "conversion": 0.94e-12
+        }
+    ]
+}

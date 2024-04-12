@@ -1,0 +1,44 @@
+dotenv: .env
+
+dependencies:
+  - Uniswap/v3-core@1.0.0
+  - Uniswap/v3-periphery@1.3.0
+  - OpenZeppelin/openzeppelin-contracts@5.0.2
+
+wallets:
+  from_key: ${PRIVATE_KEY}
+
+quoter:
+  uniswap: ${UNISWAP_QUOTER_ADDRESS}
+  sushiswap: ${SUSHISWAP_QUOTER_ADDRESS}
+  pancakeswap: ${PANCAKESWAP_QUOTER_ADDRESS}
+  camelot: ${CAMELOT_QUOTER_ADDRESS}
+  ramses: ${RAMSES_QUOTER_ADDRESS}
+
+multicall: ${MULTICALL_ADDRESS}
+
+router:
+  UniswapV2: ${UNISWAPV2_ROUTER_ADDRESS}
+  UniswapV3: ${UNISWAPV3_ROUTER_ADDRESS}
+  SushiswapV2: ${SUSHISWAPV2_ROUTER_ADDRESS}
+  SushiswapV3: ${SUSHISWAPV3_ROUTER_ADDRESS}
+  PancakeswapV2: ${PANCAKESWAPV2_ROUTER_ADDRESS}
+  PancakeswapV3 : ${PANCAKESAPV3_ROUTER_ADDRESS}
+  CamelotV2 : ${CAMELOTV2_ROUTER_ADDRESS}
+  CamelotV3 : ${CAMELOTV3_ROUTER_ADDRESS}
+  RamsesV3: ${RAMSESV3_ROUTER_ADDRESS}
+
+
+Arb:
+  polygon-main: ${ARB_ADDRESS}
+
+compiler:
+  solc:
+    remappings:
+      - "@uniswap/v3-core=Uniswap/v3-core@1.0.0"
+      - "@uniswap/v3-periphery=Uniswap/v3-periphery@1.3.0"
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@5.0.2"
+
+tokens:
+  mainnet:
+
