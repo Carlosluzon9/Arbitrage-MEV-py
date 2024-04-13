@@ -17,7 +17,7 @@ def chunk(lst, n):
 def analysis_2():
     base_tokens = load_json('base_tokens.json')
     tokens_arbitrum = load_json('token_list.json')
-    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 10))
+    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 15))
     del tokens_arbitrum
 
 
@@ -77,8 +77,8 @@ def analysis_2():
                     readableAmountsIn = to_readable_amount(amountsIn[j][i], base_token["decimals"])
                     readableAmountOut = to_readable_amount(maxOut[j][i][0], token1_decimals)
                     readableAmountIn = to_readable_amount(maxIn[j][i][0], base_token["decimals"])
-                    print(f"For {readableAmountsIn} {base_symbol} in {maxOut[j][i][1]}  you get {readableAmountOut} {token1_symbol}")
-                    print(f"For {readableAmountOut} {token1_symbol} in {maxIn[j][i][1]}  you get {readableAmountIn} {base_symbol}")
+                    #print(f"For {readableAmountsIn} {base_symbol} in {maxOut[j][i][1]}  you get {readableAmountOut} {token1_symbol}")
+                    #print(f"For {readableAmountOut} {token1_symbol} in {maxIn[j][i][1]}  you get {readableAmountIn} {base_symbol}")
                     
 
                     

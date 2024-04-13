@@ -13,6 +13,11 @@ def sqrtPricex96toQuote(sqrtPriceX96):
     return quote
 
 
+def find_last_index(data):
+  last_seen = {}
+  for i, value in enumerate(data):
+    last_seen[value] = i  # Update last seen index for the value
+  return last_seen
 
 
 

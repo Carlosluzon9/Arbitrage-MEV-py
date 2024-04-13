@@ -1,18 +1,16 @@
 from brownie import config,  interface, web3, Contract
-from .helpful_scripts import get_max_excluding_none, load_json
+from .helpful_scripts import get_max_excluding_none, load_json, find_last_index
 
 
 QuickABI = load_json("interfaces/quoter.json")
 camelotQuoter = Contract.from_abi('quickswapQuoter', config["quoter"]["camelot"], QuickABI)
-
 RamsesQuoter = interface.IQuoterV2(config["quoter"]["ramses"])
-
 uniswapQuoter = interface.IQuoter(config["quoter"]["uniswap"])
 sushiswapQuoter = interface.IQuoterV2(config["quoter"]["sushiswap"])
-
 UniswapV2Router = interface.IUniswapV2Router02(config["router"]["UniswapV2"])
 SushiswapV2Router = interface.IUniswapV2Router02(config["router"]["SushiswapV2"])
 CamelotV2Router = interface.IUniswapV2Router02(config["router"]["CamelotV2"])
+TraderJoeQuoter = interface.LBQuoter(config['quoter']['traderjoe'])
 
 Multicall = interface.IMulticall3(config["multicall"])
 
@@ -21,7 +19,7 @@ SushiswapV3 = ["SushiswapV3"]
 RamsesV3 = ["RamsesV3"]
 
 
-V2string = ["CamelotV3","UniswapV2", "SushiswapV2", "CamelotV2"]
+V2string = ["CamelotV3","UniswapV2", "SushiswapV2", "CamelotV2", "TraderjoeV2"]
 
 
 
@@ -34,9 +32,10 @@ RamsesFees = [50,100,250,500,3000,10000]
 
 Routers = fees_l*UniswapV3 + fees_l*SushiswapV3  +len(RamsesFees)*RamsesV3 + V2string 
 
-#fees_output = fees + fees_pancake + fees + [0, 0, 0]
+Last_index = find_last_index(Routers)
 
-fees_output = fees*2 + RamsesFees+ [0, 0, 0, 0]
+
+fees_output = fees*2 + RamsesFees+ [0, 0, 0, 0, 0]
 
 # struct Call3 {
 #     // Target contract to call.
@@ -48,6 +47,8 @@ fees_output = fees*2 + RamsesFees+ [0, 0, 0, 0]
 # }
 
 n_calls = len(Routers)
+
+
 
 
 def chunk(lst, n):
@@ -116,6 +117,10 @@ def get_prices(tokensIn, tokenOut, amountIn):
         encoded = CamelotV2Router.getAmountsOut.encode_input(amountIn[i], path)
         calls.append([CamelotV2Router.address, True, encoded])
 
+        #       TRADERJOE V2.1 CALL
+
+        encoded = TraderJoeQuoter.findBestPathFromAmountIn.encode_input(path, amountIn[i])
+        calls.append([TraderJoeQuoter.address, True, encoded])
 
 
     try:
@@ -145,21 +150,25 @@ def get_prices(tokensIn, tokenOut, amountIn):
                 decoded_results.append(None)
                 continue
 
-            if j<4:
+            if j<Last_index["UniswapV3"]+1:
                 decoded = uniswapQuoter.quoteExactInputSingle.decode_output(result[1])
                 decoded_results.append(decoded)
-            elif j<8:
+            elif j<Last_index["SushiswapV3"]+1:
                 decoded = sushiswapQuoter.quoteExactInputSingle.decode_output(result[1])
                 decoded_results.append(decoded[0])
-            elif j<14:
+            elif j<Last_index["RamsesV3"]+1:
                 decoded = RamsesQuoter.quoteExactInputSingle.decode_output(result[1])
                 decoded_results.append(decoded[0])
-            elif j<15:
+            elif j<Last_index["CamelotV3"]+1:
                 decoded = camelotQuoter.quoteExactInputSingle.decode_output(result[1])
                 decoded_results.append(decoded)
-            else:
+            elif j<Last_index["CamelotV2"]+1:
                 decoded = UniswapV2Router.getAmountsOut.decode_output(result[1])
                 decoded_results.append(decoded[1])
+            else:
+                decoded = TraderJoeQuoter.findBestPathFromAmountIn.decode_output(result[1])
+                decoded_results.append(decoded[4][1])
+
             
 
 

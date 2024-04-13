@@ -41,6 +41,8 @@ compiler:
       - "@uniswap/v3-periphery=Uniswap/v3-periphery@1.3.0"
       - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@5.0.2"
 
-tokens:
-  mainnet:
+networks:
+  default: arbitrum-main
+
+
 

@@ -5,7 +5,7 @@ pragma abicoder v2;
 /// @notice Functions for swapping tokens via Algebra
 /// @dev Credit to Uniswap Labs under GPL-2.0-or-later license:
 /// https://github.com/Uniswap/v3-periphery
-interface ISwapRouter_quickswap {
+interface ISwapRouter_Algebra {
     struct ExactInputSingleParams {
         address tokenIn;
         address tokenOut;

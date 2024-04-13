@@ -20,13 +20,13 @@ def trade():
     quote = TraderJoeQuoter.findBestPathFromAmountIn.call(path, amount)
     print(quote)
 
-    WETH_contract.deposit({'from': account, 'value': amount})
+    #WETH_contract.deposit({'from': account, 'value': amount})
 
-    WETH_contract.approve(config['router']['TraderjoeV2'],amount, {'from':account})
+    #WETH_contract.approve(config['router']['TraderjoeV2'],amount, {'from':account})
 
+    Path = [quote[2], quote[3], quote[0]]
 
-
-    #TX_swap = TraderjoeRouter.exactInputSingle(ExactInputSingleParams, {'from':account})
+    #TX_swap = TraderjoeRouter.swapExactTokensForTokens(amount, 0, Path, account.address, time.time()+60, {'from':account})
 
     #TX_swap.wait(2)
 
