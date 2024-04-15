@@ -17,7 +17,7 @@ def chunk(lst, n):
 def analysis_2():
     base_tokens = load_json('base_tokens.json')
     tokens_arbitrum = load_json('token_list.json')
-    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 15))
+    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 4))
     del tokens_arbitrum
 
 
@@ -43,6 +43,7 @@ def analysis_2():
             
             maxOut = get_max(base_token_addr_list, token1_addr_list, amountsIn, n_base_tokens) 
 
+            #print(maxOut)
             if maxOut == False:
                 continue
 
@@ -68,11 +69,11 @@ def analysis_2():
 
             
                     base_symbol = base_token["symbol"]
-
+                    print(maxIn[j][i])
                     if maxIn[j][i] == [None]:
                         # print(f"No trade found for {token1_symbol}/{base_symbol}")
                         continue
-
+                    
                     
                     readableAmountsIn = to_readable_amount(amountsIn[j][i], base_token["decimals"])
                     readableAmountOut = to_readable_amount(maxOut[j][i][0], token1_decimals)

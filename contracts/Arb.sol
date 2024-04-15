@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "../interfaces/IUniswapV2Router02.sol";
-import "../interfaces/ISwapRouter_Quickswap.sol";
+import "../interfaces/ISwapRouter_Algebra.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 //import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -78,8 +78,8 @@ contract Arb is Ownable(msg.sender) {
         uint256 deadline = block.timestamp + 100;
         uint256 amountOut3;
         if (_fee == 0) {
-            amountOut3 = ISwapRouter_quickswap(_router).exactInputSingle(
-                ISwapRouter_quickswap.ExactInputSingleParams({
+            amountOut3 = ISwapRouter_Algebra(_router).exactInputSingle(
+                ISwapRouter_Algebra.ExactInputSingleParams({
                     tokenIn: _tokenIn,
                     tokenOut: _tokenOut,
                     recipient: address(this),

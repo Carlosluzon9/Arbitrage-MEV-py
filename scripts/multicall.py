@@ -138,7 +138,7 @@ def get_prices(tokensIn, tokenOut, amountIn):
 
 
     all_results = []
-    
+    decoded_bin_steps=[]
 
     for i, tokenIn in enumerate(tokensIn):
 
@@ -148,6 +148,8 @@ def get_prices(tokensIn, tokenOut, amountIn):
 
             if result[0] == False:
                 decoded_results.append(None)
+                if j==Last_index["TraderjoeV2"]:
+                    decoded_bin_steps.append([None,None])
                 continue
 
             if j<Last_index["UniswapV3"]+1:
@@ -168,7 +170,7 @@ def get_prices(tokensIn, tokenOut, amountIn):
             else:
                 decoded = TraderJoeQuoter.findBestPathFromAmountIn.decode_output(result[1])
                 decoded_results.append(decoded[4][1])
-
+                decoded_bin_steps.append([decoded[2],decoded[3]]) # 2 is binSteps and 3 is versions
             
 
 
@@ -177,7 +179,7 @@ def get_prices(tokensIn, tokenOut, amountIn):
     
 
 
-    return all_results
+    return all_results, decoded_bin_steps
 
 
 
@@ -188,12 +190,13 @@ def get_prices(tokensIn, tokenOut, amountIn):
 
 def get_max(tokensIn, tokenOut, amountIn, n_base_tokens):
 
-    amountsOut = get_prices(tokensIn, tokenOut, amountIn)
+    amountsOut, binsteps = get_prices(tokensIn, tokenOut, amountIn)
 
 
     if amountsOut == False:
         return False
     
+    binsteps = list(chunk(binsteps, n_base_tokens))
     amountsOut = list(chunk(amountsOut, n_base_tokens))
     n_tokens = len(amountsOut)
 
@@ -214,7 +217,7 @@ def get_max(tokensIn, tokenOut, amountIn, n_base_tokens):
                 continue
             else:
                 index = amountsOut[j][i].index(max[0])
-                array_max= [max[0],Routers[index], fees_output[index]]
+                array_max= [max[0],Routers[index], fees_output[index],binsteps[j][i]]
                 array_base_tokens.append(array_max)
         
         array_tokens.append(array_base_tokens)
