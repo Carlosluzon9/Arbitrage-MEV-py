@@ -1,4 +1,4 @@
-from brownie import config, accounts, Arbitrage, web3
+from brownie import config, accounts, Arbitrage
 
 
 
@@ -14,3 +14,4 @@ def deploy():
 
 def main():
     deploy()
+    #print(Arbitrage[0])

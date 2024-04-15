@@ -1,8 +1,7 @@
-from brownie import config, web3, Arb, accounts
 from .helpful_scripts import load_json, from_readable_amount, to_readable_amount
 from .multicall import get_max
-#from .send_transaction import trade
-import time
+from .send_transaction import trade
+
 
 
 def chunk(lst, n):
@@ -14,8 +13,8 @@ def chunk(lst, n):
 
 
 
-def analysis_2():
-    base_tokens = load_json('base_tokens.json')
+def analysis():
+    base_tokens = load_json('base_tokens_onlyweth.json')
     tokens_arbitrum = load_json('token_list.json')
     tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 4))
     del tokens_arbitrum
@@ -69,7 +68,7 @@ def analysis_2():
 
             
                     base_symbol = base_token["symbol"]
-                    print(maxIn[j][i])
+                    
                     if maxIn[j][i] == [None]:
                         # print(f"No trade found for {token1_symbol}/{base_symbol}")
                         continue
@@ -87,7 +86,7 @@ def analysis_2():
                         
                         print(f"For {readableAmountsIn} {base_symbol} in {maxOut[j][i][1]}  you get {readableAmountOut} {token1_symbol}")
                         print(f"For {readableAmountOut} {token1_symbol} in {maxIn[j][i][1]}  you get {readableAmountIn} {base_symbol}")
-                        #trade(amountsIn[j][i], maxOut[j][i], maxIn[j][i], base_token, token1)
+                        trade(amountsIn[j][i], maxOut[j][i], maxIn[j][i], base_token, token1)
                         #readable_profit = to_readable_amount(profit_min, base_decimals)
                         #print(f"MIN PROFIT: {readable_profit}")
                     
@@ -99,4 +98,4 @@ def analysis_2():
 
 
 def main():
-    analysis_2()
+    analysis()

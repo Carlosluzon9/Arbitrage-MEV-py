@@ -1,10 +1,21 @@
-from brownie import config, accounts, interface
+from brownie import config, accounts, interface, Arbitrage
 from .helpful_scripts import load_json
 
 
-base_tokens = load_json('base_tokens_polygon.json')
-Arbitrage = interface.Arb(config["Arb"]["polygon-main"]) 
+base_tokens = load_json('base_tokens.json')
+#Arbitrage = interface.Arb(config["Arb"]["polygon-main"]) 
 
+
+PROTOCOLS = [
+    "UniswapV2", #IUniswapV2Router02
+    "UniswapV3",  #ISwapRouter
+    "SushiswapV2",
+    "SushiswapV3",
+    "CamelotV2",
+    "CamelotV3", #ISwapRouter_Algebra
+    "RamsesV3",
+    "TraderjoeV2" #ILBRouter
+]
 
 def retrieve():
     account = accounts.add(config["wallets"]["from_key"])
@@ -13,7 +24,22 @@ def retrieve():
         tokens.append(token["address"])
 
     
-    Arbitrage.recoverMyTokens(tokens, {"from":account})
+    Arbitrage[0].recoverMyTokens(tokens, {"from":account})
+
+
+
+def approve_handlers():
+    tokens_list = []
+    protocols_list = []
+    account = accounts.add(config["wallets"]["from_key"])
+
+    for token in base_tokens["tokens"]:
+        tokens_list.append(token["address"])
+
+    for protocol in PROTOCOLS:
+        protocols_list.append(config["router"][protocol])
+
+    Arbitrage[0].approveHandlers(tokens_list, protocols_list, {"from": account})
 
 
 
@@ -26,7 +52,7 @@ def send():
         print(balance)
 
 
-        tx = IERC20.transfer(config["Arb"]["polygon-main"], balance, {'from': account, 'priority_fee':36000000000})
+        tx = IERC20.transfer(Arbitrage[0], balance, {'from': account })
         tx.wait(4)
 
 
@@ -34,7 +60,7 @@ def send():
 def retrieve_one():
     account = accounts.add(config["wallets"]["from_key"])
     address = base_tokens["tokens"][5]["address"]
-    tx = Arbitrage.recoverTokens(address, {'from': account})
+    tx = Arbitrage[0].recovermyTokens(address, {'from': account})
 
 
 

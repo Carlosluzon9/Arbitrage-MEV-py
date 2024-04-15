@@ -1,0 +1,11 @@
+{
+    "tokens": [
+        {
+            "symbol": "WETH",
+            "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+            "decimals": 18,
+            "amount_min": 0.006,
+            "conversion": 1
+        }
+    ]
+}

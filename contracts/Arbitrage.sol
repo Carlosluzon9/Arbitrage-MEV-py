@@ -72,7 +72,7 @@ contract Arbitrage {
     function approveHandlers(
         address[] calldata tokens,
         address[] calldata protocols
-    ) public payable {
+    ) external {
         // Used to allow Routers from Uniswap V2, Uniswap V3, etc.
         // the access to tokens held by this contract
         uint maxInt = type(uint256).max;
@@ -100,12 +100,21 @@ contract Arbitrage {
     function profitSwap(
         SwapParams[] calldata paramsArray,
         uint256 minAmountOut
-    ) public payable onlyOwner {
+    ) external onlyOwner {
         uint256 amountOut;
         uint256 paramsArrayLength = paramsArray.length;
 
         for (uint256 i; i < paramsArrayLength; ) {
             SwapParams memory params = paramsArray[i];
+            IERC20 tokenIn = IERC20(params.tokenIn);
+            uint256 allowanceIn = tokenIn.allowance(
+                address(this),
+                params.handler
+            );
+            if (allowanceIn == 0) {
+                uint maxInt = type(uint256).max;
+                tokenIn.forceApprove(params.handler, maxInt);
+            }
 
             if (amountOut == 0) {
                 amountOut = params.amount;
@@ -136,7 +145,6 @@ contract Arbitrage {
     function uniswapV3Swap(
         SwapParams memory params
     ) internal returns (uint256 amountOut) {
-        // Sushiswap V3 doesn't have SwapRouter, needs to reimplement this to use Pools
         ISwapRouter.ExactInputSingleParams memory singleParams = ISwapRouter
             .ExactInputSingleParams({
                 tokenIn: params.tokenIn,
@@ -160,7 +168,7 @@ contract Arbitrage {
         path[0] = params.tokenIn;
         path[1] = params.tokenOut;
 
-        uint[] memory amounts = IUniswapV2Router(params.handler)
+        uint[] memory amounts = IUniswapV2Router02(params.handler)
             .swapExactTokensForTokens(
                 params.amount,
                 0,

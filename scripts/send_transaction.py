@@ -1,10 +1,10 @@
 from brownie import accounts, web3, interface, config, Arbitrage
 
 
-min_pecentage_profit = 0.0015
+min_pecentage_profit = 0.0005
 
 # Arbitrage = interface.Arbitrage(config["Arb"]["polygon-main"]) 
-# Arbi_est = web3.eth.contract( address = config["Arb"]["polygon-main"], abi = Arb.abi )
+Arbi_est = web3.eth.contract( web3.toChecksumAddress(config["Arb"]["arbitrum-main"]), abi = Arbitrage.abi )
 
 PROTOCOL_TO_ID = {
     "UniswapV2": 0, #IUniswapV2Router02
@@ -72,15 +72,28 @@ def trade(amountIn, maxOut, maxIn, base_token, token1):
     
         
 
+    #min_profit = int(min_pecentage_profit*amountIn)
 
+    min_profit = 0   #0.1$ in weth
+    minAmoutOut = amountIn+min_profit
+    try:
+        min_profit = Arbi_est.functions.profitSwap([SwapParams1, SwapParams2], minAmoutOut).estimateGas({"from":account.address})
+        min_profit = min_profit* 1e7
+        print(f'Minimum profit is: {min_profit}')
+    except ValueError as e:
+        print(f'Value Error: {e}')
+        min_profit = 3100000000000
+    except Exception as e:
+        print(f'Exception: {e}')
+        min_profit = 3100000000000   
 
-    base_symbol = base_token["symbol"]
-    token1_symbol = token1["symbol"]
-    profit = maxIn[0] - amountIn
+    minAmoutOut = amountIn + min_profit
+
+    print(f'minAmountOut: {minAmoutOut}')
 
 
     try:
-        Arbitrage.profitSwap([SwapParams1, SwapParams2], profit, {'from':account})
+        Arbitrage[0].profitSwap([SwapParams1, SwapParams2], minAmoutOut, {'from':account})
     except ValueError as e:
         print(f'Value Error: {e}')
     except Exception as e:

@@ -32,7 +32,7 @@ router:
 
 
 Arb:
-  polygon-main: ${ARB_ADDRESS}
+  arbitrum-main: ${ARB_ARBITRUM}
 
 compiler:
   solc:
