@@ -1,6 +1,7 @@
 from .helpful_scripts import load_json, from_readable_amount, to_readable_amount
 from .multicall import get_max
 from .send_transaction import trade
+import time
 
 
 
@@ -16,7 +17,7 @@ def chunk(lst, n):
 def analysis():
     base_tokens = load_json('base_tokens_onlyweth.json')
     tokens_arbitrum = load_json('token_list.json')
-    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 4))
+    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 6))
     del tokens_arbitrum
 
 
@@ -82,13 +83,15 @@ def analysis():
                     
 
                     
-                    if maxIn[j][i][0] > amountsIn[j][i]:
+                    if maxIn[j][i][0] > amountsIn[j][i]*1.00035:
                         
                         print(f"For {readableAmountsIn} {base_symbol} in {maxOut[j][i][1]}  you get {readableAmountOut} {token1_symbol}")
                         print(f"For {readableAmountOut} {token1_symbol} in {maxIn[j][i][1]}  you get {readableAmountIn} {base_symbol}")
                         trade(amountsIn[j][i], maxOut[j][i], maxIn[j][i], base_token, token1)
                         #readable_profit = to_readable_amount(profit_min, base_decimals)
                         #print(f"MIN PROFIT: {readable_profit}")
+        
+        time.sleep(0.5)
                     
             
             

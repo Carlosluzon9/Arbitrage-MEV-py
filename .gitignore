@@ -8,3 +8,4 @@ tests/
 base_tokens.json
 token_list.json
 scripts/__pycache__
+.vscode/

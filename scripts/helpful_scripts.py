@@ -35,6 +35,7 @@ def get_max_excluding_none(data):
   filtered_data = filter(lambda x: x is not None, data)
   filtered_data = list(filtered_data)
   # Use max() on the filtered list, handling potential emptiness
+  
   return [max(filtered_data, default=None), zeroLength]
     
 

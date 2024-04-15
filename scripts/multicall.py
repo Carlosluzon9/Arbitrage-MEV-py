@@ -35,7 +35,7 @@ Routers = fees_l*UniswapV3 + fees_l*SushiswapV3  +len(RamsesFees)*RamsesV3 + V2s
 Last_index = find_last_index(Routers)
 
 
-fees_output = fees*2 + RamsesFees+ [0, 0, 0, 0, 0]
+fees_output = fees*2 + RamsesFees + [0, 0, 0, 0, 0]
 
 # struct Call3 {
 #     // Target contract to call.

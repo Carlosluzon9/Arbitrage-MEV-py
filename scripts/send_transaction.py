@@ -78,8 +78,8 @@ def trade(amountIn, maxOut, maxIn, base_token, token1):
     minAmoutOut = amountIn+min_profit
     try:
         min_profit = Arbi_est.functions.profitSwap([SwapParams1, SwapParams2], minAmoutOut).estimateGas({"from":account.address})
-        min_profit = min_profit* 1e7
-        print(f'Minimum profit is: {min_profit}')
+        min_profit = web3.eth.gas_price*min_profit
+        #print(f'Minimum profit is: {min_profit}')
     except ValueError as e:
         print(f'Value Error: {e}')
         min_profit = 3100000000000
@@ -89,7 +89,7 @@ def trade(amountIn, maxOut, maxIn, base_token, token1):
 
     minAmoutOut = amountIn + min_profit
 
-    print(f'minAmountOut: {minAmoutOut}')
+    print(f'minAmountOut: {minAmoutOut}, amountIn: {maxIn[0]}')
 
 
     try:
