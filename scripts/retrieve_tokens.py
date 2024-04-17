@@ -51,10 +51,11 @@ def send():
         balance = IERC20.balanceOf(account.address)
         print(balance)
 
-
-        tx = IERC20.transfer(Arbitrage[0], balance, {'from': account })
-        tx.wait(4)
-
+        if balance !=0:
+            tx = IERC20.transfer(Arbitrage[0], balance, {'from': account })
+            tx.wait(4)
+        else:
+            pass
 
 
 def retrieve_one():

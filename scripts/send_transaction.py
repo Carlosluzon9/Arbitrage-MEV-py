@@ -87,7 +87,7 @@ def trade(amountIn, maxOut, maxIn, base_token, token1):
         print(f'Exception: {e}')
         min_profit = 3100000000000   
 
-    minAmoutOut = amountIn + min_profit
+    minAmoutOut = amountIn + min_profit*base_token["conversion"]
 
     print(f'minAmountOut: {minAmoutOut}, amountIn: {maxIn[0]}')
 

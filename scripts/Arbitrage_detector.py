@@ -2,6 +2,10 @@ from .helpful_scripts import load_json, from_readable_amount, to_readable_amount
 from .multicall import get_max
 from .send_transaction import trade
 import time
+from brownie import web3
+from web3.middleware import simple_cache_middleware
+
+web3.middleware_onion.inject(simple_cache_middleware, layer=0)
 
 
 
@@ -15,9 +19,9 @@ def chunk(lst, n):
 
 
 def analysis():
-    base_tokens = load_json('base_tokens_onlyweth.json')
+    base_tokens = load_json('base_tokens.json')
     tokens_arbitrum = load_json('token_list.json')
-    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 6))
+    tokens_arbitrum_list = list(chunk(tokens_arbitrum["tokens"], 4))
     del tokens_arbitrum
 
 
